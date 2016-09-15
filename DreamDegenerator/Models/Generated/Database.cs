@@ -136,6 +136,60 @@ namespace SqlServerCon
 
     
 
+	[TableName("dbo.NavigationConfig")]
+
+
+
+	[PrimaryKey("Id")]
+
+
+
+
+	[ExplicitColumns]
+
+    public partial class NavigationConfig : SqlServerConDB.Record<NavigationConfig>  
+    {
+
+
+
+		[Column] public int Id { get; set; }
+
+
+
+
+
+		[Column] public string TypeName { get; set; }
+
+
+
+
+
+		[Column] public string IconName { get; set; }
+
+
+
+
+
+		[Column] public string Description { get; set; }
+
+
+
+
+
+		[Column] public string LinkUrl { get; set; }
+
+
+
+
+
+		[Column] public string Memo { get; set; }
+
+
+
+	}
+
+    
+
 	[TableName("dbo.SystemUser")]
 
 

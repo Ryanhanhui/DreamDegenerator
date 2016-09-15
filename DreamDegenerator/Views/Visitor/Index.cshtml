@@ -1,0 +1,82 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en" class="ie_11_scroll">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="hhhwidth=device-width, initial-scale=1">
+    <title>Index</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="~/Css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Css/font-awesome.css">
+    <link rel="stylesheet" href="~/Css/templatemo_style.css">
+    <!-- Favicon and touch icons -->
+    <link rel="shortcut icon" href="favicon.png" />
+</head>
+<body>
+    <!-- Top menu -->
+    @*<div class="show-menu">
+        <a href="#" class="shadow-top-down">+</a>
+    </div>
+    <nav class="main-menu shadow-top-down">
+        <ul class="nav nav-pills nav-stacked">
+            <li><a href="#templatemo_home" class="scroll_effect">Home</a></li>
+            <li><a href="#templatemo_features" class="scroll_effect">Features</a></li>
+            <li><a href="#templatemo_download" class="scroll_effect">Download</a></li>
+            <li><a href="http://www.facebook.com/templatemo" rel="nofollow" target="_parent">Fan Page</a></li>
+            <li><a href="elements.html">Elements</a></li>
+            <li><a href="#templatemo_contact" class="scroll_effect">Contact</a></li>
+        </ul>
+    </nav>*@
+    <!-- Features -->
+    <section id="templatemo_features">
+        <div class="container-fluid">
+            <header class="template_header">
+                <h1 class="text-center"><span>...</span> Navigation <span>...</span></h1>
+            </header>
+            <div class="col-sm-12" id="FuncDiv">
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 footer-copyright">
+                    <p>Copyright &copy; 2016.Harvey All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- require plugins -->
+    <script src="~/Scripts/jquery-1.9.1.js"></script>
+    <script src="~/Scripts/jquery-ui.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.parallax.js"></script>
+    <!-- template mo config script -->
+    <script src="~/Scripts/templatemo_scripts.js"></script>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        //获取界面初始化需要的json数据
+        $.getJSON("Visitor/Init", {}, function (data) {
+            $.each(data, function (i) {
+                var innerhtml = "<div class=\"col-sm-6 col-lg-3 feature-box\" onclick=\""+data[i].LinkUrl+"\">"
+                +"<div class=\"feature-box-inner\">"
+                    +"<div class=\"feature-box-icon\">"
+                        + "<i class=\"" + data[i].IconName + "\"></i>"
+                    +"</div>"
+                    +"<p>"
+                        + data[i].Description
+                    +"</p>"
+                +"</div>"
+            + "</div>";
+                    $("#FuncDiv").append(innerhtml);
+            });
+        });
+    });
+</script>

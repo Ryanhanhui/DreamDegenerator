@@ -16,7 +16,7 @@ namespace DreamDegenerator
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "ManagerLogin", action = "Login", id = UrlParameter.Optional }
+                defaults: new { controller = "Visitor", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
