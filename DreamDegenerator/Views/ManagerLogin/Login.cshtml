@@ -54,7 +54,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             if ($("#username").val() != ""&&$("#password").val()!="") {
                 var encodestr = hex_md5($("#password").val());
                 encodestr = hex_sha1(encodestr);
-                $.post("/ManagerLogin/HandleLogin",
+                $.post("/Manager/ManagerLogin/HandleLogin",
                     {
                         username: $("#username").val(),
                         pwd:encodestr

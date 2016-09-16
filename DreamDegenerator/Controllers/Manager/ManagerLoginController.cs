@@ -29,7 +29,7 @@ namespace DreamDegenerator.Controllers.Manager
             {
                 Session["Username"] = username;
                 FormsAuthentication.SetAuthCookie(username, false);  
-                return "ManagerIndex/Index";
+                return "/Manager/ManagerIndex/DashBoardPage";
             }
             return "用户名或密码错误";
         }

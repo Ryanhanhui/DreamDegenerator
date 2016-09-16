@@ -20,7 +20,12 @@ namespace DreamDegenerator.Controllers.Manager
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
-            return Redirect("ManagerLogin/Login");
+            return View("~/Views/ManagerLogin/Login.cshtml");
+        }
+        [Authorize]
+        public ActionResult DashBoardPage()
+        {
+            return View();
         }
     }
 }

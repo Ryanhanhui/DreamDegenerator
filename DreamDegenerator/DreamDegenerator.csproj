@@ -110,6 +110,7 @@
   <ItemGroup>
     <Compile Include="Controllers\Manager\ManagerIndexController.cs" />
     <Compile Include="Controllers\Manager\ManagerLoginController.cs" />
+    <Compile Include="Controllers\Manager\SystemPlateController.cs" />
     <Compile Include="Controllers\Visitor\VisitorController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -198,6 +199,8 @@
     <Content Include="Scripts\jquery-1.9.1.min.map" />
     <Content Include="Views\ManagerIndex\Index.cshtml" />
     <Content Include="Views\Visitor\Index.cshtml" />
+    <Content Include="Views\ManagerIndex\DashBoardPage.cshtml" />
+    <Content Include="Views\SystemPlate\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
