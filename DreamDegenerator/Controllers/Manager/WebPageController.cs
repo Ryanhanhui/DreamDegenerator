@@ -3,37 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using PetaPoco;
 
 namespace DreamDegenerator.Controllers.Manager
 {
     public class WebPageController : Controller
     {
-        string tableName, currPage,actionName,strWhere;
-        Database db = new PetaPoco.Database("SqlServerCon");
-        //
+        static TPageInfo tpage;
         // GET: /WebPage/
         [Authorize]
-        public ActionResult PageInfo(string tablename,string currentpage,string actionname,string strwhere)
+        [HttpPost]
+        public ActionResult PageInfo(string pagenum,string currentpage,string actionname)
         {
             //do something
-            tableName = tablename;
-            currPage = currentpage;
-            actionName = actionname;
-            strWhere = strwhere;
+            tpage = new TPageInfo();
+            tpage.pagenum = int.Parse(pagenum);
+            tpage.currentpage = int.Parse(currentpage);
+            tpage.actionname = actionname;
             return PartialView();
         }
-        public string InitPage()
+        [HttpGet]
+        public string LoadPageInfo()
         {
-            long result = db.ExecuteScalar<long>("select count(1) from @0 @1",tableName,strWhere);
-
-            return "";
+            System.Web.Script.Serialization.JavaScriptSerializer jsS = new System.Web.Script.Serialization.JavaScriptSerializer();
+            string json = "";
+            json = jsS.Serialize(tpage);
+            return json;
         }
-        public class PageInfo 
+        public class TPageInfo
         {
             public int pagenum;
             public int currentpage;
-            public string pageaction;
+            public string actionname;
         }
     }
 }

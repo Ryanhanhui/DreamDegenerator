@@ -32,16 +32,7 @@
         </table>
     </div>
 </div>
-<div style="float:right">
-    <ul class="pagination pagination-sm">
-        <li class="disabled"><a href="#"><i class="fa fa-angle-left"></i></a></li>
-        <li class="active"><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-    </ul>
+<div style="float:right" id="pagearea">
 </div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
@@ -79,7 +70,18 @@
 @*<script src="/Scripts/jquery-1.9.1.min.js"></script>*@
 <script>
     $(document).ready(function () {
-
+        $.post("/Manager/WebPage/PageInfo",
+                    {
+                        pagenum: "1",
+                        currentpage: "1",
+                        actionname: "/Manager/SystemPlate/LoadData"
+                    },
+                    function (data, status) {
+                        if (status == "success") {
+                            $("#pagearea").html(data);
+                        }
+                    }
+                    );
     });
     function InitData() {
 
