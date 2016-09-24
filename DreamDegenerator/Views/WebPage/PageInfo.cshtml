@@ -2,64 +2,56 @@
     
 </ul>
 
-@*<ul class="pagination pagination-sm">
-    @if(int.Parse(ViewData["CurrentPage"].ToString())<10)
-    {
-        <li class="disabled"><a href="#"><i class="fa fa-angle-left"></i></a></li>
-    }
-    else
-    {
-        <li><a href="#" onclick="LeftClick();"><i class="fa fa-angle-left"></i></a></li>
-    }
-    @{
-    int pagezone=0;
-    if (ViewData["CurrentPage"].ToString() == ViewData["PageNum"].ToString())
-        pagezone = int.Parse(ViewData["PageNum"].ToString());
-
-    for (int i = (int.Parse(ViewData["CurrentPage"].ToString()) - int.Parse(ViewData["CurrentPage"].ToString()) % 10 + 1); i <= pagezone;i++ )
-    {
-        if(int.Parse(ViewData["CuurentPage"].ToString())==i)
-        {
-            <li class="active"><a href="@ViewData["ActioName"]">i</a></li>
-        }
-    }
-    }
-</ul>*@
-
-@*<script src="/Scripts/jquery-1.9.1.min.js"></script>*@
+<script src="/Scripts/jquery-1.9.1.min.js"></script>
 <script>
     var pagehtml;
     var currentpage;
     var pagenum;
     var actionname;
+    var pagearea;
     $(document).ready(function () {
         $.getJSON("/Manager/WebPage/LoadPageInfo", {}, function (data) {
             //alert(data.currentpage);
             currentpage = data.currentpage;
             pagenum = data.pagenum;
             actionname = data.actionname;
+            pagearea = parseInt((parseInt(currentpage) / 10));
             initpage();
         });
         
     });
     function initpage() {
-        if (currentpage < 10) {
+        debugger;
+        if (parseInt(pagearea)<1) {
             pagehtml = "<li class=\"disabled\"><a href=\"#\"><i class=\"fa fa-angle-left\"></i></a></li>";
         }
         else {
-            pagehtml = "<li><a href=\"#\" onclick=\"LeftFunc();\"><i class=\"fa fa-angle-left\"></i></a></li>";
+            if (currentpage%10==0&&pagearea==1) {
+                pagehtml = "<li class=\"disabled\"><a href=\"#\"><i class=\"fa fa-angle-left\"></i></a></li>";
+            }
+            else {
+                pagehtml = "<li><a href=\"#\" onclick=\"LeftFunc();\"><i class=\"fa fa-angle-left\"></i></a></li>";
+            }
         }
-        var pagezone = 0;
-        if (currentpage == pagenum) {
-            pagezone = pagenum;
+        var zonemax = 0;
+        if ((parseInt(pagearea)+1)*10<=parseInt(pagenum)) {
+            zonemax = (parseInt(pagearea) + 1) * 10;
         }
-        else if (parseInt(currentpage) + parseInt(10 - parseInt(currentpage) % 10) <= parseInt(pagenum)) {
-            pagezone = parseInt(currentpage) + parseInt(10 - parseInt(currentpage) % 10);
+        else if ((parseInt(pagearea) + 1) * 10 > parseInt(pagenum)) {
+            zonemax = pagenum;
         }
-        else if (parseInt(currentpage) + parseInt(10 - parseInt(currentpage) % 10) > parseInt(pagenum)) {
-            pagezone = pagenum;
+        else if (currentpage == pagenum) {
+            zonemax = pagenum;
         }
-        for (var i = (parseInt(currentpage) - parseInt(currentpage) % 10 + 1) ; i <= pagezone; i++) {
+        var zonemin = parseInt(parseInt(pagearea) * 10 + 1);
+        if (parseInt(parseInt(currentpage) % 10) == 0) {
+            zonemin = parseInt(parseInt(pagearea - 1) * 10 + 1);
+            zonemax = parseInt(pagearea) * 10;
+        }
+        if (zonemax >= pagenum) {
+            zonemax = pagenum;
+        }
+        for (var i = zonemin ; i <= zonemax; i++) {
             if (currentpage == i) {
                 pagehtml += "<li class=\"active\"><a href=\"" + actionname + "/" + i + "\">" + i + "</a></li>";
             }
@@ -67,12 +59,20 @@
                 pagehtml += "<li><a href=\"" + actionname + "/" + i + "\">" + i + "</a></li>";
             }
         }
-        if (parseInt(pagezone) < parseInt(pagenum)) {
+        if (parseInt(zonemax) < parseInt(pagenum)) {
             pagehtml += "<li><a href=\"#\" onclick=\"RightFunc();\"><i class=\"fa fa-angle-right\"></i></a></li>";
         }
         else {
             pagehtml += "<li class=\"disabled\"><a href=\"#\"><i class=\"fa fa-angle-right\"></i></a></li>";
         }
-        $("#tpageinfo").append(pagehtml);
+        $("#tpageinfo").html(pagehtml);
+    }
+    function LeftFunc() {//页码向前
+        pagearea = parseInt(pagearea) - 1;
+        initpage();
+    }
+    function RightFunc() {//页码向后
+        pagearea = parseInt(pagearea) + 1;
+        initpage();
     }
 </script>
