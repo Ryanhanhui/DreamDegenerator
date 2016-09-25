@@ -7,7 +7,6 @@
         <table class="table table-striped">
             <thead>
                 <tr class="warning">
-                    <th>#</th>
                     <th>功能模块名</th>
                     <th>图标名</th>
                     <th>链接地址</th>
@@ -16,18 +15,8 @@
                     <th>操作</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>mdo</td>
-                    <td>mdo</td>
-                    <td>mdo</td>
-                    <td><button type="button" class="btn btn-xs btn-warning warning_44" data-toggle="modal" data-target="#myModal">编辑</button>
-                        <button type="button" class="btn btn-xs btn-danger">删除</button>
-                    </td>
-                </tr>
+            <tbody id="DataBody">
+                
             </tbody>
         </table>
     </div>
@@ -70,11 +59,41 @@
 @*<script src="/Scripts/jquery-1.9.1.min.js"></script>*@
 <script>
     $(document).ready(function () {
+        InitData();
+    });
+    function InitData() {
+        $.getJSON("/Manager/SystemPlate/InitData",
+            {
+                pagesize:"10"
+            },
+            function (data) {
+                debugger;
+                var tablehtml = "";
+                var items=data.Items;
+                $.each(items, function (i) {
+                    var statusname = (items[i].Status == "1" ? "已启用" : "未启用");
+                    tablehtml += "<tr>"
+                    + "<td>" + items[i].TypeName + "</td>"
+                    + "<td>" + items[i].IconName + "</td>"
+                    + "<td>" + items[i].LinkUrl + "</td>"
+                    +"<td>"+statusname+"</td>"
+                    + "<td>" + items[i].Memo + "</td>"
+                    +"<td><button type=\"button\" class=\"btn btn-xs btn-warning warning_44\" data-toggle=\"modal\" data-target=\"#myModal\">编辑</button>"
+                        +"<button type=\"button\" class=\"btn btn-xs btn-danger\">删除</button>"
+                    +"</td>"
+                +"</tr>";
+                });
+                $("#DataBody").html(tablehtml);
+                loadpageinfo(data.CurrentPage, data.TotalPages);
+            }
+        )
+    }
+    function loadpageinfo(currentpage, totalpage) {
         $.post("/Manager/WebPage/PageInfo",
                     {
-                        pagenum: "1",
-                        currentpage: "1",
-                        actionname: "/Manager/SystemPlate/LoadData"
+                        pagenum: totalpage,
+                        currentpage: currentpage,
+                        actionname: "/Manager/SystemPlate/List"
                     },
                     function (data, status) {
                         if (status == "success") {
@@ -82,8 +101,5 @@
                         }
                     }
                     );
-    });
-    function InitData() {
-
     }
 </script>

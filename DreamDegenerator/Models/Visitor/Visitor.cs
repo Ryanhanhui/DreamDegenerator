@@ -13,7 +13,7 @@ namespace DreamDegenerator.Models.Visitor
         Database db = new PetaPoco.Database("SqlServerCon");
         public string GetNavigationList()
         {
-            var navigation = db.Query<NavigationConfig>("select * from NavigationConfig");
+            var navigation = db.Query<NavigationConfig>("select * from NavigationConfig where Status='1'");
             System.Web.Script.Serialization.JavaScriptSerializer jsS = new System.Web.Script.Serialization.JavaScriptSerializer();
             string json = "";
             json = jsS.Serialize(navigation);

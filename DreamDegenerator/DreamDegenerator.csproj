@@ -122,6 +122,7 @@
       <DependentUpon>Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Login\Login.cs" />
+    <Compile Include="Models\Manage\SystemPlate.cs" />
     <Compile Include="Models\PetaPoco.cs" />
     <Compile Include="Models\Public\PFun.cs" />
     <Compile Include="Models\Visitor\Visitor.cs" />

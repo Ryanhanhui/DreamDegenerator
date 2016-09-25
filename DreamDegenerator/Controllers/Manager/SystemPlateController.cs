@@ -8,13 +8,20 @@ namespace DreamDegenerator.Controllers.Manager
 {
     public class SystemPlateController : Controller
     {
-        //
+        static string currentindex = "";
         // GET: /SystemPlate/
-
-        public ActionResult List()
+        [Authorize]
+        public ActionResult List(int id)
         {
+            currentindex = id.ToString();
             return View();
         }
-        
+        [Authorize]
+        [HttpGet]
+        public string InitData(string pagesize)//获取数据
+        {
+            DreamDegenerator.Models.Manage.SystemPlate handle = new Models.Manage.SystemPlate();
+            return handle.GetInitJsonData(currentindex, pagesize);
+        }
     }
 }

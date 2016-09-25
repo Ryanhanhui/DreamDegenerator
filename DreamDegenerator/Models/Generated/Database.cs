@@ -186,6 +186,12 @@ namespace SqlServerCon
 
 
 
+
+
+		[Column] public string Status { get; set; }
+
+
+
 	}
 
     
