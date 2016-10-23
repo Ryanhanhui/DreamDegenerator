@@ -27,31 +27,59 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h2 class="modal-title">Modal title</h2>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="InitData();">×</button>
+                <h2 class="modal-title">功能模块信息</h2>
             </div>
             <div class="modal-body">
-                <h2>Text in a modal</h2>
-                <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
-                <h2>Tooltips in a modal</h2>
-                <p><a href="#" class="tooltips" title="" data-original-title="Tooltip">This link</a> and <a href="#" class="tooltips" title="" data-original-title="Tooltip">that link</a> should have tooltips on hover.</p>
-
-                <hr>
-                <h2>Overflowing text to show scroll behavior</h2>
-                <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-                <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-                <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-                <p><img src="images/pic3.jpg" class="img-responsive" alt="Fountain" class="img-rounded img-responsive"></p>
-                <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-                <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-                <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-                <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                <div class="tab-pane active" id="horizontal-form">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="focusedinput" class="col-sm-2 control-label">模块名</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control1" id="TypeName" placeholder="请输入分类名称">
+                            </div>
+                            <div class="col-sm-2">
+                                <p class="help-block">分类名不能重复！</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="focusedinput" class="col-sm-2 control-label">图标名称</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control1" id="IconName" placeholder="请输入图标名">
+                            </div>
+                            <div class="col-sm-2">
+                                <p class="help-block">font awesome图标名称！</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtarea1" class="col-sm-2 control-label">模块描述</label>
+                            <div class="col-sm-8"><textarea name="Description" id="Description" cols="50" rows="4" class="form-control1"></textarea></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="smallinput" class="col-sm-2 control-label label-input-sm">链接地址</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control1 input-sm" id="LinkUrl" placeholder="链接地址">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="radio" class="col-sm-2 control-label">是否启用</label>
+                            <div class="col-sm-8">
+                                <div class="radio-inline"><label><input type="radio" name="Status" id="Sta_True" value="1" checked="checked">启用</label></div>
+                                <div class="radio-inline"><label><input type="radio" name="Status" id="Sta_False" value="0">停用</label></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="smallinput" class="col-sm-2 control-label label-input-sm">备注</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control1 input-sm" id="Memo" placeholder="备注信息">
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="InitData();">关闭窗口</button>
+                <button type="button" class="btn btn-primary" id="SaveBtn">保存信息</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -67,7 +95,6 @@
                 pagesize:"10"
             },
             function (data) {
-                debugger;
                 var tablehtml = "";
                 var items=data.Items;
                 $.each(items, function (i) {
@@ -78,7 +105,7 @@
                     + "<td>" + items[i].LinkUrl + "</td>"
                     +"<td>"+statusname+"</td>"
                     + "<td>" + items[i].Memo + "</td>"
-                    +"<td><button type=\"button\" class=\"btn btn-xs btn-warning warning_44\" data-toggle=\"modal\" data-target=\"#myModal\">编辑</button>"
+                    +"<td><button type=\"button\" class=\"btn btn-xs btn-warning warning_44\" data-toggle=\"modal\" data-target=\"#myModal\" onclick='editfun("+items[i].Id+");'>编辑</button>"
                         +"<button type=\"button\" class=\"btn btn-xs btn-danger\">删除</button>"
                     +"</td>"
                 +"</tr>";
@@ -101,5 +128,45 @@
                         }
                     }
                     );
+    }
+    function editfun(id) {
+        $.getJSON("/Manager/SystemPlate/LoadData",
+            {
+                id:id
+            },
+            function (data) {
+                $("#TypeName").val(data.TypeName);
+                $("#IconName").val(data.IconName);
+                $("#Description").val(data.Description);
+                $("#LinkUrl").val(data.LinkUrl);
+                $("#Memo").val(data.Memo);
+                if (data.Status == "1")
+                    $("#Sta_True").attr("checked", "true");
+                else
+                    $("#Sta_False").attr("checked", "true");
+                //$("#SaveBtn").click(updateData("edit",data.Id));
+                $("#SaveBtn").attr("onclick", "updateData('edit'," + data.Id + ")");
+            }
+         )
+    }
+    function updateData(status, id) {
+        if (status == "edit") {
+            $.post("/Manager/SystemPlate/UpdateData",
+                    {
+                        Id: id,
+                        TypeName: $("#TypeName").val(),
+                        IconName: $("#IconName").val(),
+                        Description: $("#Description").val(),
+                        LinkUrl: $("#LinkUrl").val(),
+                        Status: $("input[name='Status']:checked").val(),
+                        Memo: $("#Memo").val()
+                    },
+                    function (data, status) {
+                        if (status == "success") {
+                            alert(data);
+                        }
+                    }
+                    );
+        }
     }
 </script>

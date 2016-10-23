@@ -59,5 +59,18 @@ namespace DreamDegenerator.Models.Manage
                 return false;
             }
         }
+        /// <summary>
+        /// 获取单条数据
+        /// </summary>
+        /// <param name="id">数据项id</param>
+        /// <returns>json数据格式的查询结果</returns>
+        public string GetJsonData(string id)
+        {
+            var result = db.SingleOrDefault<NavigationConfig>("SELECT * FROM NavigationConfig WHERE Id=@0", id);
+            System.Web.Script.Serialization.JavaScriptSerializer jsS = new System.Web.Script.Serialization.JavaScriptSerializer();
+            string json = "";
+            json = jsS.Serialize(result);
+            return json;
+        }
     }
 }
