@@ -2,6 +2,9 @@
     ViewBag.Title = "List";
     Layout = "~/Views/ManagerIndex/Index.cshtml";
 }
+<div>
+    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal" onclick="AddData();">新增模块</button>
+</div>
 <div class="panel panel-warning" data-widget="{&quot;draggable&quot;: &quot;false&quot;}" data-widget-static="">
     <div class="panel-body no-padding">
         <table class="table table-striped">
@@ -168,5 +171,25 @@
                     }
                     );
         }
+    }
+    function AddData() {
+        $("#SaveBtn").attr("onclick", "insertData()");
+    }
+    function insertData() {
+        $.post("/Manager/SystemPlate/AddData",
+                    {
+                        TypeName: $("#TypeName").val(),
+                        IconName: $("#IconName").val(),
+                        Description: $("#Description").val(),
+                        LinkUrl: $("#LinkUrl").val(),
+                        Status: $("input[name='Status']:checked").val(),
+                        Memo: $("#Memo").val()
+                    },
+                    function (data, status) {
+                        if (status == "success") {
+                            alert(data);
+                        }
+                    }
+                    );
     }
 </script>

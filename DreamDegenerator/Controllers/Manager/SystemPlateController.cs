@@ -47,5 +47,22 @@ namespace DreamDegenerator.Controllers.Manager
             else
                 return "保存失败";
         }
+        [Authorize]
+        public string AddData(string TypeName,string IconName,string Description,string LinkUrl,string Status,string Memo)
+        {
+            NavigationConfig na = new NavigationConfig();
+            na.TypeName = TypeName;
+            na.IconName = IconName;
+            na.Description = Description;
+            na.LinkUrl = LinkUrl;
+            na.Status = Status;
+            na.Memo = Memo;
+            DreamDegenerator.Models.Manage.SystemPlate handle = new Models.Manage.SystemPlate();
+            bool result = handle.AddData(na);
+            if (result)
+                return "添加成功";
+            else
+                return "添加失败";
+        }
     }
 }

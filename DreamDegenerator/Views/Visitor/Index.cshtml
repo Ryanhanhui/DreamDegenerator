@@ -65,7 +65,7 @@
         //获取界面初始化需要的json数据
         $.getJSON("Visitor/Init", {}, function (data) {
             $.each(data, function (i) {
-                var innerhtml = "<div class=\"col-sm-6 col-lg-3 feature-box\" onclick=\""+data[i].LinkUrl+"\">"
+                var innerhtml = "<div class=\"col-sm-6 col-lg-3 feature-box\" onclick=\"ngaclick('" + data[i].LinkUrl + "')\">"
                 +"<div class=\"feature-box-inner\">"
                     +"<div class=\"feature-box-icon\">"
                         + "<i class=\"" + data[i].IconName + "\"></i>"
@@ -79,4 +79,14 @@
             });
         });
     });
+    function ngaclick(url) {
+        var strurl = url.substr(0, 7);
+        if (strurl.toLowerCase() == "http://") {
+            window.location.href = url;
+        }
+        else {
+            url = "http://" + url;
+            window.location.href = url;
+        }    
+    }
 </script>
