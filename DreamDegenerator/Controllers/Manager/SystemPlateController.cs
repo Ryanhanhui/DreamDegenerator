@@ -64,5 +64,14 @@ namespace DreamDegenerator.Controllers.Manager
             else
                 return "添加失败";
         }
+        public string DeleteData(string Id)
+        {
+            DreamDegenerator.Models.Manage.SystemPlate handle = new Models.Manage.SystemPlate();
+            bool result = handle.DeleteData(Id);
+            if (result)
+                return "删除成功";
+            else
+                return "删除失败";
+        }
     }
 }
