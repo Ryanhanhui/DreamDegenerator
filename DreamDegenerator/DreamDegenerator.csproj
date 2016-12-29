@@ -140,7 +140,6 @@
     <Content Include="Css\clndr.css" />
     <Content Include="Css\custom.css" />
     <Content Include="Css\font-awesome.css" />
-    <Content Include="Css\jquery-confirm.min.css" />
     <Content Include="Css\jqvmap.css" />
     <Content Include="Css\lines.css" />
     <Content Include="Css\style.css" />
@@ -177,7 +176,6 @@
     <Content Include="Scripts\d3.v3.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
-    <Content Include="Scripts\jquery-confirm.min.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.min.js" />
     <Content Include="Scripts\jquery.parallax.js" />
