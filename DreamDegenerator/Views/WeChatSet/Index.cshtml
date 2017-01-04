@@ -1,0 +1,216 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/ManagerIndex/Index.cshtml";
+}
+<script src="~/Scripts/layer/layer.js"></script>
+<div>
+    <button type="button" class="btn btn-sm btn-primary" onclick="AddData();">添加微信号</button>
+</div>
+<div class="panel panel-warning" data-widget="{&quot;draggable&quot;: &quot;false&quot;}" data-widget-static="">
+    <div class="panel-body no-padding">
+        <table class="table table-striped">
+            <thead>
+                <tr class="warning">
+                    <th>微信账号</th>
+                    <th>用户凭证</th>
+                    <th>用户秘钥</th>
+                    <th>描述</th>
+                    <th>备注</th>
+                    <th>是否启用</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="DataBody"></tbody>
+        </table>
+    </div>
+</div>
+<div style="float:right" id="pagearea">
+</div>
+@*<script src="/Scripts/jquery-1.9.1.min.js"></script>*@
+<script>
+    $(document).ready(function () {
+        //InitData();
+    });
+    function InitData() {
+        $.getJSON("/Manager/SystemPlate/InitData",
+            {
+                pagesize: "10"
+            },
+            function (data) {
+                var tablehtml = "";
+                var items = data.Items;
+                $.each(items, function (i) {
+                    var statusname = (items[i].Status == "1" ? "已启用" : "未启用");
+                    tablehtml += "<tr>"
+                    + "<td>" + items[i].TypeName + "</td>"
+                    + "<td>" + items[i].IconName + "</td>"
+                    + "<td>" + items[i].LinkUrl + "</td>"
+                    + "<td>" + statusname + "</td>"
+                    + "<td>" + items[i].Memo + "</td>"
+                    + "<td><button type=\"button\" class=\"btn btn-xs btn-warning warning_44\" data-toggle=\"modal\" data-target=\"#myModal\" onclick='editfun(" + items[i].Id + ");'>编辑</button>"
+                        + "<button type=\"button\" class=\"btn btn-xs btn-danger\" id='delBtn' onclick='deleteData(" + items[i].Id + ");'>删除</button>"
+                    + "</td>"
+                + "</tr>";
+                });
+                $("#DataBody").html(tablehtml);
+                loadpageinfo(data.CurrentPage, data.TotalPages);
+            }
+        )
+    }
+    function loadpageinfo(currentpage, totalpage) {
+        $.post("/Manager/WebPage/PageInfo",
+                    {
+                        pagenum: totalpage,
+                        currentpage: currentpage,
+                        actionname: "/Manager/SystemPlate/List"
+                    },
+                    function (data, status) {
+                        if (status == "success") {
+                            $("#pagearea").html(data);
+                        }
+                    }
+                    );
+    }
+    function editfun(id) {
+        $.getJSON("/Manager/SystemPlate/LoadData",
+            {
+                id: id
+            },
+            function (data) {
+                $("#TypeName").val(data.TypeName);
+                $("#IconName").val(data.IconName);
+                $("#Description").val(data.Description);
+                $("#LinkUrl").val(data.LinkUrl);
+                $("#Memo").val(data.Memo);
+                if (data.Status == "1")
+                    $("#Sta_True").attr("checked", "true");
+                else
+                    $("#Sta_False").attr("checked", "true");
+                //$("#SaveBtn").click(updateData("edit",data.Id));
+                $("#SaveBtn").attr("onclick", "updateData('edit'," + data.Id + ")");
+            }
+         )
+    }
+    function updateData(status, id) {
+        if (status == "edit") {
+            $.post("/Manager/SystemPlate/UpdateData",
+                    {
+                        Id: id,
+                        TypeName: $("#TypeName").val(),
+                        IconName: $("#IconName").val(),
+                        Description: $("#Description").val(),
+                        LinkUrl: $("#LinkUrl").val(),
+                        Status: $("input[name='Status']:checked").val(),
+                        Memo: $("#Memo").val()
+                    },
+                    function (data, status) {
+                        if (status == "success") {
+                            alert(data);
+                        }
+                    }
+                    );
+        }
+    }
+    function AddData() {
+        //$("#SaveBtn").attr("onclick", "insertData()");
+        layer.open({
+            type: 1,
+            resize:false, 
+            skin: 'layui-layer-rim', //加上边框
+            area: ['700px', '600px'],
+            shadeClose: true, //点击遮罩关闭
+            content: "<div class='modal-dialog'>"
+        +"<div class='modal-content'>"
+            +"<div class='modal-header'>"
+                +"<h2 class='modal-title'>功能模块信息</h2>"
+            +"</div>"
+            +"<div class='modal-body'>"
+                +"<div class='tab-pane active' id='horizontal-form'>"
+                    +"<form class='form-horizontal'>"
+                        +"<div class='form-group'>"
+                            +"<label for='focusedinput' class='col-sm-2 control-label'>模块名</label>"
+                            +"<div class='col-sm-8'>"
+                                +"<input type='text' class='form-control1' id='TypeName' placeholder='请输入分类名称'>"
+                            +"</div>"
+                            +"<div class='col-sm-2'>"
+                                +"<p class='help-block'>分类名不能重复！</p>"
+                            +"</div>"
+                        +"</div>"
+                        +"<div class='form-group'>"
+                            +"<label for='focusedinput' class='col-sm-2 control-label'>图标名称</label>"
+                            +"<div class='col-sm-8'>"
+                                +"<input type='text' class='form-control1' id='IconName' placeholder='请输入图标名'>"
+                            +"</div>"
+                            +"<div class='col-sm-2'>"
+                                +"<p class='help-block'>font awesome图标名称！</p>"
+                            +"</div>"
+                        +"</div>"
+                        +"<div class='form-group'>"
+                            +"<label for='txtarea1' class='col-sm-2 control-label'>模块描述</label>"
+                            +"<div class='col-sm-8'><textarea name='Description' id='Description' cols='50' rows='4' class='form-control1'></textarea></div>"
+                        +"</div>"
+                        +"<div class='form-group'>"
+                            +"<label for='smallinput' class='col-sm-2 control-label label-input-sm'>链接地址</label>"
+                            +"<div class='col-sm-8'>"
+                                +"<input type='text' class='form-control1 input-sm' id='LinkUrl' placeholder='链接地址'>"
+                            +"</div>"
+                        +"</div>"
+                        +"<div class='form-group'>"
+                            +"<label for='radio' class='col-sm-2 control-label'>是否启用</label>"
+                            +"<div class='col-sm-8'>"
+                                +"<div class='radio-inline'><label><input type='radio' name='Status' id='Sta_True' value='1' checked='checked'>启用</label></div>"
+                                +"<div class='radio-inline'><label><input type='radio' name='Status' id='Sta_False' value='0'>停用</label></div>"
+                            +"</div>"
+                        +"</div>"
+                        +"<div class='form-group'>"
+                            +"<label for='smallinput' class='col-sm-2 control-label label-input-sm'>备注</label>"
+                            +"<div class='col-sm-8'>"
+                                +"<input type='text' class='form-control1 input-sm' id='Memo' placeholder='备注信息'>"
+                            +"</div>"
+                        +"</div>"
+                    +"</form>"
+                +"</div>"
+            +"</div>"
+            +"<div class='modal-footer'>"
+                +"<button type='button' class='btn btn-default' data-dismiss='modal' onclick='InitData();'>关闭窗口</button>"
+                +"<button type='button' class='btn btn-primary' id='SaveBtn'>保存信息</button>"
+            +"</div>"
+        +"</div>"
+    +"</div>"
+        });
+    }
+    function insertData() {
+        $.post("/Manager/SystemPlate/AddData",
+                    {
+                        TypeName: $("#TypeName").val(),
+                        IconName: $("#IconName").val(),
+                        Description: $("#Description").val(),
+                        LinkUrl: $("#LinkUrl").val(),
+                        Status: $("input[name='Status']:checked").val(),
+                        Memo: $("#Memo").val()
+                    },
+                    function (data, status) {
+                        if (status == "success") {
+                            alert(data);
+                        }
+                    }
+                    );
+    }
+    function deleteData(id) {
+        var r = confirm("你确认要删除吗？");
+        if (r == true) {
+            $.post("/Manager/SystemPlate/DeleteData",
+                        {
+                            Id: id
+                        },
+                        function (data, status) {
+                            if (status == "success") {
+                                alert(data);
+                                InitData();
+                            }
+                        }
+                        );
+        }
+
+    }
+</script>
