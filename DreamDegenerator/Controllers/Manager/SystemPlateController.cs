@@ -30,6 +30,7 @@ namespace DreamDegenerator.Controllers.Manager
             DreamDegenerator.Models.Manage.SystemPlate handle = new Models.Manage.SystemPlate();
             return handle.GetJsonData(id);
         }
+        [Authorize]
         public string UpdateData(string Id,string TypeName,string IconName,string Description,string LinkUrl,string Status,string Memo)
         {
             NavigationConfig na = new NavigationConfig();
@@ -64,6 +65,7 @@ namespace DreamDegenerator.Controllers.Manager
             else
                 return "添加失败";
         }
+        [Authorize]
         public string DeleteData(string Id)
         {
             DreamDegenerator.Models.Manage.SystemPlate handle = new Models.Manage.SystemPlate();

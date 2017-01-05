@@ -284,5 +284,65 @@ namespace SqlServerCon
 
 	}
 
+    
+
+	[TableName("dbo.WeChat_Account")]
+
+
+
+	[PrimaryKey("Id")]
+
+
+
+
+	[ExplicitColumns]
+
+    public partial class WeChat_Account : SqlServerConDB.Record<WeChat_Account>  
+    {
+
+
+
+		[Column] public int Id { get; set; }
+
+
+
+
+
+		[Column] public string AccountNo { get; set; }
+
+
+
+
+
+		[Column] public string AppId { get; set; }
+
+
+
+
+
+		[Column] public string Secret { get; set; }
+
+
+
+
+
+		[Column] public string Description { get; set; }
+
+
+
+
+
+		[Column] public string Remark { get; set; }
+
+
+
+
+
+		[Column] public string Status { get; set; }
+
+
+
+	}
+
 
 }
