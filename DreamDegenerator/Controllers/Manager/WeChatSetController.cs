@@ -50,15 +50,20 @@ namespace DreamDegenerator.Controllers.Manager
             item.Description = Description;
             item.Status = Status;
             item.Remark = Remark;
-            try
-            {
-                db.Insert(item);
-                return "添加成功";
-            }
-            catch (Exception)
-            {
-                return "添加失败";
-            }
+            //try
+            //{
+                if (!db.Exists<WeChat_Account>("AccountNo=@0", AccountNo))
+                {
+                    db.Insert(item);
+                    return "添加成功";
+                }
+                else
+                    return "微信账号已经存在，添加失败";
+            //}
+            //catch (Exception)
+            //{
+            //    return "添加失败";
+            //}
         }
         [Authorize]
         public string UpdateData(string Id, string AccountNo, string AppId, string Secret, string Description, string Status, string Remark)
@@ -73,8 +78,22 @@ namespace DreamDegenerator.Controllers.Manager
             item.Remark = Remark;
             try
             {
-                db.Update(item);
-                return "更新成功";
+                WeChat_Account result = db.SingleOrDefault<WeChat_Account>("SELECT * FROM WeChat_Account WHERE Id=@0", Id);
+                if(result.AccountNo!=AccountNo)
+                {
+                    if (!db.Exists<WeChat_Account>("AccountNo=@0", AccountNo))
+                    {
+                        db.Update(item);
+                        return "更新成功";
+                    }
+                    else
+                        return "与其他微信号冲突，请更换";
+                }
+                else
+                {
+                    db.Update(item);
+                    return "更新成功";
+                }                
             }
             catch (Exception)
             {
