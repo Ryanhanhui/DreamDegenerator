@@ -1,0 +1,288 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/ManagerIndex/Index.cshtml";
+}
+<div>
+    <button type="button" class="btn btn-sm btn-primary" onclick="AddData();">添加素材</button>
+</div>
+<div class="panel panel-warning" data-widget="{&quot;draggable&quot;: &quot;false&quot;}" data-widget-static="">
+    <div class="panel-body no-padding">
+        <table class="table table-striped">
+            <thead>
+                <tr class="warning">
+                    <th>素材名称</th>
+                    <th>素材类型</th>
+                    <th>素材时效</th>
+                    <th>备注</th>
+                    <th>添加日期</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="DataBody"></tbody>
+        </table>
+    </div>
+</div>
+<div id="editpage" style="display:none">
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-body'>
+                <div class='tab-pane active' id='horizontal-form'>
+                    <form class='form-horizontal'>
+                        <div class='form-group'>
+                            <label for='focusedinput' class='col-sm-2 control-label'>微信号</label>
+                            <div class='col-sm-8'>
+
+                                <input type='text' class='form-control1' id='AccountNo' placeholder='请输入微信账号'>
+
+                            </div>
+                            <div class='col-sm-2'>
+                                <p class='help-block'>微信号不能重复！</p>
+                            </div>
+                        </div>
+                        <div class='form-group'>
+                            <label for='focusedinput' class='col-sm-2 control-label'>用户唯一凭证</label>
+                            <div class='col-sm-8'>
+
+                                <input type='text' class='form-control1' id='AppId' placeholder='请输入用户唯一凭证'>
+
+                            </div>
+                        </div>
+                        <div class='form-group'>
+
+                            <label for='focusedinput' class='col-sm-2 control-label'>用户唯一凭证秘钥</label>
+                            <div class='col-sm-8'>
+
+                                <input type='text' class='form-control1' id='Secret' placeholder='请输入用户唯一凭证秘钥'>
+
+                            </div>
+                        </div>
+                        <div class='form-group'>
+
+                            <label for='txtarea1' class='col-sm-2 control-label'>账号描述</label>
+                            <div class='col-sm-8'><textarea name='Description' id='Description' cols='50' rows='4' class='form-control1'></textarea></div>
+
+                        </div>
+                        <div class='form-group'>
+
+                            <label for='radio' class='col-sm-2 control-label'>是否启用</label>
+                            <div class='col-sm-8'>
+
+                                <div class='radio-inline'><label><input type='radio' name='Status' id='Sta_True' value='1' checked='checked'>启用</label></div>
+                                <div class='radio-inline'><label><input type='radio' name='Status' id='Sta_False' value='0'>停用</label></div>
+
+                            </div>
+                        </div>
+                        <div class='form-group'>
+
+                            <label for='smallinput' class='col-sm-2 control-label label-input-sm'>备注</label>
+                            <div class='col-sm-8'>
+
+                                <input type='text' class='form-control1 input-sm' id='Remark' placeholder='备注信息'>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class='modal-footer'>
+
+                <button type='button' class='btn btn-primary' id='SaveBtn'>保存信息</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div style="float:right" id="pagearea">
+</div>
+@*<script src="/Scripts/jquery-1.9.1.min.js"></script>*@
+<script>
+    $(document).ready(function () {
+        InitData();
+    });
+    function InitData() {
+        $.getJSON("/Manager/WeChatSet/InitData",
+            {
+                pagesize: "10"
+            },
+            function (data) {
+                var tablehtml = "";
+                var items = data.Items;
+                $.each(items, function (i) {
+                    var statusname = (items[i].Status == "1" ? "已启用" : "未启用");
+                    tablehtml += "<tr>"
+                    + "<td>" + items[i].AccountNo + "</td>"
+                    + "<td>" + items[i].AppId + "</td>"
+                    + "<td>" + items[i].Secret + "</td>"
+                    + "<td>" + items[i].Remark + "</td>"
+                    + "<td>" + statusname + "</td>"
+                    + "<td><button type=\"button\" class=\"btn btn-xs btn-warning warning_44\" onclick='editfun(" + items[i].Id + ");'>编辑</button>"
+                        + "<button type=\"button\" class=\"btn btn-xs btn-danger\" id='delBtn' onclick='deleteData(" + items[i].Id + ");'>删除</button>"
+                    + "</td>"
+                + "</tr>";
+                });
+                $("#DataBody").html(tablehtml);
+                loadpageinfo(data.CurrentPage, data.TotalPages);
+            }
+        )
+    }
+    function loadpageinfo(currentpage, totalpage) {
+        $.post("/Manager/WebPage/PageInfo",
+                    {
+                        pagenum: totalpage,
+                        currentpage: currentpage,
+                        actionname: "/Manager/WeChatSet/Index"
+                    },
+                    function (data, status) {
+                        if (status == "success") {
+                            $("#pagearea").html(data);
+                        }
+                    }
+                    );
+    }
+    function editfun(id) {
+        $.getJSON("/Manager/WeChatSet/LoadData",
+            {
+                id: id
+            },
+            function (data) {
+                $("#AccountNo").val(data.AccountNo);
+                $("#AppId").val(data.AppId);
+                $("#Secret").val(data.Secret);
+                $("#Description").val(data.Description);
+                $("#Remark").val(data.Remark);
+                if (data.Status == "1")
+                    $("#Sta_True").attr("checked", "true");
+                else
+                    $("#Sta_False").attr("checked", "true");
+                $("#SaveBtn").attr("onclick", "updateData('edit'," + data.Id + ")");
+                layer.open({
+                    title: '微信账号信息',
+                    type: 1,
+                    resize: false,
+                    skin: 'layui-layer-rim', //加上边框
+                    area: ['700px', '600px'],
+                    shadeClose: true, //点击遮罩关闭
+                    content: $('#editpage'),
+                    end: function () {
+                        $('#editpage').attr("style", "display:none");
+                        ClearEditPage();
+                        InitData();
+                    }
+                });
+
+            }
+         )
+    }
+    function updateData(status, id) {
+        if (!CheckSave()) return;
+        if (status == "edit") {
+            $.post("/Manager/WeChatSet/UpdateData",
+                    {
+                        Id: id,
+                        AccountNo: $("#AccountNo").val(),
+                        AppId: $("#AppId").val(),
+                        Secret: $("#Secret").val(),
+                        Description: $("#Description").val(),
+                        Status: $("input[name='Status']:checked").val(),
+                        Remark: $("#Remark").val()
+                    },
+                    function (data, status) {
+                        if (status == "success") {
+                            layer.msg(data, { icon: 0 });
+                        }
+                    }
+                    );
+        }
+    }
+    function AddData() {
+        $("#SaveBtn").attr("onclick", "insertData()");
+        layer.open({
+            title: '微信账号信息',
+            type: 1,
+            resize: false,
+            skin: 'layui-layer-rim', //加上边框
+            area: ['700px', '600px'],
+            shadeClose: true, //点击遮罩关闭
+            content: $('#editpage'),
+            end: function () {
+                $('#editpage').attr("style", "display:none");
+                ClearEditPage();
+                InitData();
+            }
+        });
+    }
+    function insertData() {
+        if (!CheckSave()) return;
+        $.post("/Manager/WeChatSet/AddData",
+                    {
+                        AccountNo: $("#AccountNo").val(),
+                        AppId: $("#AppId").val(),
+                        Secret: $("#Secret").val(),
+                        Description: $("#Description").val(),
+                        Status: $("input[name='Status']:checked").val(),
+                        Remark: $("#Remark").val()
+                    },
+                    function (data, status) {
+                        if (status == "success") {
+                            layer.msg(data, { icon: 0 });
+                        }
+                    }
+                    );
+    }
+    function deleteData(id) {
+        layer.confirm("你确定要删除吗？",
+            {
+                title: '提示',
+                icon: 2,
+                btn: ['确定', '取消']
+            },
+            function () {
+                $.post("/Manager/WeChatSet/DeleteData",
+                        {
+                            Id: id
+                        },
+                        function (data, status) {
+                            if (status == "success") {
+                                layer.msg(data, { icon: 0 });
+                                InitData();
+                            }
+                        }
+                        );
+            },
+            function () {
+
+            }
+            );
+
+    }
+    function CheckSave() {
+        debugger;
+        if ($("#AccountNo").val() == "") {
+            layer.msg('微信账号不能为空!', { icon: 2 });
+            return false;
+        }
+        if ($("#AppId").val() == "") {
+            layer.msg('用户凭证不能为空!', { icon: 2 });
+            return false;
+        }
+        if ($("#Secret").val() == "") {
+            layer.msg('用户凭证秘钥不能为空!', { icon: 2 });
+            return false;
+        }
+        if ($("#Description").val() == "") {
+            layer.msg('账号描述不能为空!', { icon: 2 });
+            return false;
+        }
+        return true;
+    }
+    function ClearEditPage() {
+        $("#AccountNo").val("");
+        $("#AppId").val("");
+        $("#Secret").val("");
+        $("#Description").val("");
+        $("#Remark").val("");
+        $("#Sta_True").attr("checked", "true");
+    }
+</script>
+

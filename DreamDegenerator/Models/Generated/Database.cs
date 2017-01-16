@@ -344,5 +344,71 @@ namespace SqlServerCon
 
 	}
 
+    
+
+	[TableName("dbo.WeChat_MediaInfo")]
+
+
+
+	[PrimaryKey("Id")]
+
+
+
+
+	[ExplicitColumns]
+
+    public partial class WeChat_MediaInfo : SqlServerConDB.Record<WeChat_MediaInfo>  
+    {
+
+
+
+		[Column] public int Id { get; set; }
+
+
+
+
+
+		[Column] public string Name { get; set; }
+
+
+
+
+
+		[Column] public string MediaId { get; set; }
+
+
+
+
+
+		[Column] public string MediaType { get; set; }
+
+
+
+
+
+		[Column] public string Prescription { get; set; }
+
+
+
+
+
+		[Column] public string Remark { get; set; }
+
+
+
+
+
+		[Column] public DateTime? AddDate { get; set; }
+
+
+
+
+
+		[Column] public string DownUrl { get; set; }
+
+
+
+	}
+
 
 }
