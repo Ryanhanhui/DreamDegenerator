@@ -112,6 +112,7 @@
     <Compile Include="Controllers\Manager\ManagerLoginController.cs" />
     <Compile Include="Controllers\Manager\SystemPlateController.cs" />
     <Compile Include="Controllers\Manager\WebPageController.cs" />
+    <Compile Include="Controllers\Manager\WeChatMediaManageController.cs" />
     <Compile Include="Controllers\Manager\WeChatSetController.cs" />
     <Compile Include="Controllers\Visitor\VisitorController.cs" />
     <Compile Include="Global.asax.cs">
@@ -183,6 +184,14 @@
     <Content Include="Scripts\jquery.vmap.js" />
     <Content Include="Scripts\jquery.vmap.sampledata.js" />
     <Content Include="Scripts\jquery.vmap.world.js" />
+    <Content Include="Scripts\laydate\laydate.js" />
+    <Content Include="Scripts\laydate\need\laydate.css" />
+    <Content Include="Scripts\laydate\skins\dahong\icon.png" />
+    <Content Include="Scripts\laydate\skins\dahong\laydate.css" />
+    <Content Include="Scripts\laydate\skins\default\icon.png" />
+    <Content Include="Scripts\laydate\skins\default\laydate.css" />
+    <Content Include="Scripts\laydate\skins\molv\icon.png" />
+    <Content Include="Scripts\laydate\skins\molv\laydate.css" />
     <Content Include="Scripts\layer\layer.js" />
     <Content Include="Scripts\layer\mobile\layer.js" />
     <Content Include="Scripts\layer\mobile\need\layer.css" />
@@ -215,6 +224,7 @@
     <Content Include="Views\SystemPlate\List.cshtml" />
     <Content Include="Views\WebPage\PageInfo.cshtml" />
     <Content Include="Views\WeChatSet\Index.cshtml" />
+    <Content Include="Views\WeChatMediaManage\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
